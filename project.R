@@ -1,4 +1,3 @@
-setwd("C:/Users/Batu/Desktop/project data")
 library(dplyr)
 library(moments)
 library(ggplot2)
