@@ -1,3 +1,4 @@
+#setwd("path/project data")
 library(dplyr)
 library(moments)
 library(ggplot2)
@@ -357,16 +358,16 @@ seNations
 # GRAPHICS
 
 goals
-colors <- c("cyan4", "cornsilk4", "brown2", "dimgray", "darkorange1", "darkorchid","forestgreen", "deeppink", "lightcoral", "khaki")
+colors <- c("slategray2", "aquamarine", "bisque", "darkorange", "darkseagreen4", "deeppink1","greenyellow", "lightpink1", "seashell2", "yellow1")
 
 # Goals
 ggplot(goals, aes(x = Player, y = Goals, fill = colors)) +
   geom_bar(stat = "identity", position = "dodge", width = 0.7, color = "black") +
   theme_minimal() +
-  labs(title = "Most Scorer Players",
+  labs(title = "",
        x = "Player",
        y = "Number of Goals", ) +
-  
+  scale_fill_manual(values = colors) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(b = 10), face = "bold", size = 13)
         ,axis.text.y = element_text(angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(l = 30), face = "bold", size = 13),title = element_text(size = 25, hjust = 0.5),
         axis.title = element_text(size = 20,hjust = 0.5),
@@ -382,10 +383,10 @@ ggplot(goals, aes(x = Player, y = Goals, fill = colors)) +
 ggplot(goals, aes(x = Player, y = Total.Attempts, fill = colors)) +
   geom_bar(stat = "identity", position = "dodge", width = 0.7, color = "black") +
   theme_minimal() +
-  labs(title = "Total Attempts of Most Scorer Players",
+  labs(title = "",
        x = "Player",
        y = "Total Attempts", ) +
-  
+  scale_fill_manual(values = colors) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(b = 10), face = "bold", size = 13)
         ,axis.text.y = element_text(angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(l = 30), face = "bold", size = 13),title = element_text(size = 25, hjust = 0.5),
         axis.title = element_text(size = 20,hjust = 0.5),
@@ -407,7 +408,7 @@ goals %>%
   arrange(attempt_needed) %>%
   mutate(Player = factor(Player, unique(Player))) %>%
   ggplot() + aes(x=Player, y=attempt_needed) +
-  geom_segment( aes(x=Player, xend=Player, y=0, yend=attempt_needed), color=colors, linewidth = 2) +
+  geom_segment( aes(x=Player, xend=Player, y=0, yend=attempt_needed), color=colors, linewidth = 3) +
   geom_point( color=colors, size=4) +
   geom_text(aes(label = attempt_needed), hjust = -1) + 
   labs(
@@ -432,7 +433,7 @@ goals %>%
 # Average Age
 ggplot(teams, aes(x = average.age,  y = team)) +
   geom_point(size = 3) +
-  labs(title = "Average Age of Teams",
+  labs(title = "",
        x = "Average Age",
        y = "Team")+theme_light() +
   geom_text(aes(label = average.age), vjust = -0.7) +
@@ -448,22 +449,25 @@ ggplot(teams, aes(x = average.age,  y = team)) +
 # Market Value
 
 
-donut_colors <- c("cyan4", "cornsilk4", "brown2", "dimgray", "darkorange1", "darkorchid","forestgreen", "deeppink", "lightcoral", "khaki", "aquamarine3","bisque3", "brown2", "burlywood2", "darkgrey", "darkolivegreen2", "darkorange3", "darkorchid", "darkseagreen", "darkslategray", "darkslategray3", "deeppink", "gray52", "deepskyblue1", "forestgreen", "cornsilk2", "coral2", "chartreuse2", "cadetblue4", "burlywood4", "darkgoldenrod1", "darkgoldenrod4")                                              
+donut_colors <- c("cyan4", "cornsilk4", "brown2", "dimgray", "darkorange1", "darkorchid","forestgreen", "deeppink", "lightcoral", "khaki", "aquamarine3","bisque3", "brown2", "burlywood2", "darkgrey", "darkolivegreen2", "darkorange3", "darkorchid", "darkseagreen", "darkslategray", "darkslategray3", "slategray2", "gray52", "deepskyblue1", "forestgreen", "cornsilk2", "coral2", "chartreuse2", "cadetblue4", "burlywood4", "darkgoldenrod1", "darkgoldenrod4")                                              
 
 
 ggplot(teams, aes(x=2, y=market.value/100, fill=team))+
   geom_col(width=1) +
   xlim(0.5, 2.5) +
-  scale_fill_viridis_d() +
-  labs(title = "Market Values of Teams",
+  labs(title = "",
        x = "",
        y = "")+theme_light() +
   coord_polar("y") +theme_void()+
   theme(
-    plot.title = element_text(size = 25,hjust = 0.5, margin = margin(t = 30)))+
+    plot.title = element_text(size = 25,hjust = 0.5, margin = margin(t = 30)),
+    legend.position = "top", legend.text = element_text(size = 10))+
   geom_text(aes(label = paste0(round(market.value/sum(market.value)*100, 1), "%")), position = position_stack(vjust = 0.5))+
   scale_fill_manual(values = donut_colors)
 
+
+       
+       
 # Assists
 
 assists <- assists[order(assists$Assists, decreasing = T), ]
@@ -474,9 +478,10 @@ assists %>%
   mutate(Player = factor(Player, unique(Player))) %>%
   ggplot(aes(x = Assists, y = Player)) +
   geom_bar(stat = "identity", fill = colors) +
-  labs(title = "Player Assists",
+  labs(title = "",
        x = "Assists",
        y = "Player") +
+  theme_minimal()+
   theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(b = 10), face = "bold", size = 13)
         ,axis.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(l = 30), face = "bold", size = 13),title = element_text(size = 25, hjust = 0.5),
         axis.title = element_text(size = 20,hjust = 0.5),
@@ -488,14 +493,14 @@ assists %>%
                        
 
 # Saves
-colors_saves <- c("darkorchid3", "deepskyblue", "forestgreen", "darkorange3")
+colors_saves <- c("springgreen", "deepskyblue", "palegoldenrod", "powderblue")
 label_saves <- c("Clean Sheets", "Goals Conceded", "Matches Played", "Saves")
 saves_long <- gather(saves, key = "Variable", value = "Value", -Player)
 saves_long
 ggplot(saves_long, aes(x = Player, y = Value, fill = Variable)) +
   geom_bar(stat = "identity", position = "stack") +
-  geom_text(aes(label = ifelse(Value != 0, Value, "")), position = position_stack(vjust = 0.5), size = 3) +
-  labs(title = "Goalkeeper Statistics",
+  geom_text(aes(label = ifelse(Value != 0, Value, "")), position = position_stack(vjust = 0.5), size = 6) +
+  labs(title = "",
        x = "Player",
        y = "")+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(b = 10), face = "bold", size = 13)
                           ,axis.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(l = 30), face = "bold", size = 13),title = element_text(size = 25, hjust = 0.5),
@@ -504,30 +509,31 @@ ggplot(saves_long, aes(x = Player, y = Value, fill = Variable)) +
                           
        )+
   scale_fill_manual(values = colors_saves, name = "", labels = label_saves)+
-  theme(legend.margin = margin(l = 20))
+  theme(legend.margin = margin(l = 20))+
+  theme_minimal()
 
 
 # Nations
 nations
-nations_no_points <- nations[, -6]
+nations_no_points <- nations[, c(-6,-7)]
 nations_long <- gather(nations_no_points, key = "Variable", value = "Value", -Country)
 nations_long
-colors_nations <- c("deepskyblue", "forestgreen", "darkorange3", "deeppink3")
+colors_nations <- c("springgreen", "deepskyblue", "palegoldenrod", "powderblue")
 label_nations <- c("Number of Teams", "Draws", "Losses", "Wins")
 
 ggplot(nations_long, aes(x = Country, y = Value, fill = Variable)) +
   geom_bar(stat = "identity", position = "stack") +
-  geom_text(aes(label = ifelse(Value != 0, Value, "")), position = position_stack(vjust = 0.5), size = 3) +
-  labs(title = "Nation Statistics",
+  geom_text(aes(label = ifelse(Value != 0, Value, "")), position = position_stack(vjust = 0.5), size = 6) +
+  labs(title = "",
        x = "Nation",
-       y = "")+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5, margin = margin(b = 10), face = "bold", size = 13)
+       y = "")+theme_minimal()+theme(axis.text.x = element_text(angle = 18, vjust = 0.5, hjust = 0.5, margin = margin(b = 10), face = "bold", size = 15),legend.text = element_text(size = 15)
                      ,axis.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(l = 30), face = "bold", size = 13),title = element_text(size = 25, hjust = 0.5),
-                     axis.title = element_text(size = 20,hjust = 0.5),
+                     axis.title = element_text(size = 30,hjust = 0.5),
                      axis.title.x = element_text(size = 20,hjust = 0.5),plot.title = element_text(size = 25,hjust = 0.5, margin = margin(b=30))
                      
        )+
   scale_fill_manual(values = colors_nations, name = "", labels = label_nations)+
-  theme(legend.margin = margin(l = 20))
+  theme(legend.position = "top")
 
 
 # Points per team
@@ -539,9 +545,9 @@ color_nations <- c(colors, "mediumvioletred", "navajowhite1", "slateblue2", "sea
 nations %>%arrange(points.per.team) %>%mutate(Country = factor(Country, unique(Country))) %>%
   ggplot(aes(x = points.per.team, y = Country)) +
   geom_bar(stat = "identity", fill = color_nations) +
-  labs(title = "Points per Team",
+  labs(title = "",
        x = "Points Claimed",
-       y = "Nation") +
+       y = "Nation") +theme_minimal()+
   theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(b = 10), face = "bold", size = 13)
         ,axis.text.y = element_text(angle = 0, vjust = 0.5, hjust = 0.5, margin = margin(l = 30), face = "bold", size = 13),title = element_text(size = 25, hjust = 0.5),
         axis.title = element_text(size = 20,hjust = 0.5),
@@ -561,18 +567,20 @@ names(games_table) <- name
 games_table
 n <- sum(games$Freq)
 n
-color_games <- c("darkslategray3", "darkolivegreen4", "chocolate3")
+color_games <- c("palegoldenrod", "seagreen1", "pink")
 
-ggplot(games, aes(x=1, y=Freq, fill=V1))+
+games$V1 = name
+colnames(games) <- c("Stadium","Freq")
+
+ggplot(games, aes(x=2, y=Freq, fill=Stadium))+
   geom_col(width=1) +
-  xlim(0.5, 1.5) +
-  scale_fill_viridis_d() +
-  labs(title = "Percentage of Winners Side",
+  xlim(0.5, 2.5) +
+  labs(title = "",
        x = "",
-       y = "")+
-  coord_polar("y") +
-  theme_void()+geom_text(aes(label = paste0(round(Freq/n*100, 1), "%")),size = 10, position = position_stack(vjust = 0.5))+
-  scale_fill_manual(values = color_games, name = "Games", labels = name)+
-  theme(legend.margin = margin(l = 20), legend.text = element_text(size = 13), legend.title = element_text(size = 20))+
+       y = "")+theme_light() +
+  coord_polar("y") +theme_void()+
   theme(
-       plot.title = element_text(size = 25,hjust = 0.5, margin = margin(t = 30)))
+    plot.title = element_text(size = 25,hjust = 0.5, margin = margin(t = 30)),
+    legend.position = "top", legend.text = element_text(size = 15), legend.title = element_text(size = 15))+
+  geom_text(aes(label = paste0(round(Freq/n*100, 1), "%")), position = position_stack(vjust = 0.5), size = 10)+
+  scale_fill_manual(values = color_games)
